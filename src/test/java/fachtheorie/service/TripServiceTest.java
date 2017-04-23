@@ -47,6 +47,8 @@ public class TripServiceTest {
 
     private Vehicle vehicle = new Vehicle();
 
+    private Vehicle vehicle2 = new Vehicle();
+
     private Employee employee = new Employee();
 
     private Reservation reservation = new Reservation();
@@ -58,7 +60,13 @@ public class TripServiceTest {
     @Before
     public void setUp() throws Exception {
         vehicle.setNumberPlate("1234");
-        vehicle.setKm(1000);
+        vehicle.setKm(8000);
+
+        vehicle2.setNumberPlate("12345");
+        vehicle2.setKm(10000);
+        vehicle2.setBasicPrice(50);
+        vehicle2.setPricePer100Km(70);
+
         employee.setSVNR("fri15403");
         employee.setFirstname("Rene");
         employee.setLastname("Friedrich");
@@ -67,13 +75,12 @@ public class TripServiceTest {
         reservation.setVehicle(vehicle);
         reservation.setDateFrom(LocalDate.now().minusDays(4));
 
-        List<Reservation> reservations = new ArrayList<>();
-        reservations.add(reservation);
+        trip.setVehicle(vehicle2);
+        trip.setEmployee(employee);
+        trip.setStartDate(LocalDate.now().minusDays(20));
+        trip.setKmBegin(4000);
 
-        employee.setReservations(reservations);
-        vehicle.setReservations(reservations);
-
-
+        tripRepository.save(trip);
         reservationRepository.save(reservation);
         vehicleRepository.save(vehicle);
         employeeRepository.save(employee);
@@ -82,6 +89,7 @@ public class TripServiceTest {
     @After
     public void tearDown() throws Exception {
         reservationRepository.deleteAll();
+        tripRepository.deleteAll();
         vehicleRepository.deleteAll();
         employeeRepository.deleteAll();
 
@@ -92,6 +100,20 @@ public class TripServiceTest {
         tripService.startTrip("1234","fri15403");
         List<Trip> trips = (List<Trip>) tripRepository.findAll();
         assertEquals(1,trips.size());
+    }
+
+
+    @Test
+    public void returnCar() throws Exception {
+        tripService.returnCar("12345");
+        assertEquals(10000, trip.getKmEnd(),0.0001);
+        assertEquals(LocalDate.now(), trip.getEndDate());
+        assertEquals(4250.0, tripService.calculatePrice(50,70,4000,10000),0.0001);
+    }
+
+    @Test
+    public void calculatePrice() throws Exception {
+        assertEquals(4250.0,tripService.calculatePrice(50,70,4000,10000),0.0001);
     }
 
 }

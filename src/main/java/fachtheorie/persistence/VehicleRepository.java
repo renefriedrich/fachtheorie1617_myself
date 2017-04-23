@@ -11,4 +11,7 @@ import javax.transaction.Transactional;
 @Transactional
 public interface VehicleRepository extends CrudRepository<Vehicle, Long> {
 
+
+    Vehicle findByNumberPlate(String numberPlate);
+
 }

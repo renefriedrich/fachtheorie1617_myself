@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import java.time.LocalDate;
@@ -19,10 +20,10 @@ public class Trip extends AbstractPersistable<Long> {
     private double kmBegin;
     private double kmEnd;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Vehicle vehicle;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Employee employee;
 
 }
