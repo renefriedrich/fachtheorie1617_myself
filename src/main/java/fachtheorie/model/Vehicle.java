@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.List;
@@ -24,10 +25,10 @@ public class Vehicle extends AbstractPersistable<Long> {
     private double pricePer100Km;
     private double penaltyPerDay;
 
-    @OneToMany
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
     private List<Reservation> reservations;
 
-    @OneToMany
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
     private List<Trip> trips;
 
 

@@ -19,7 +19,6 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -32,23 +31,16 @@ public class ReservationServiceTest {
 
     @Autowired
     private ReservationService reservationService;
-
     @Autowired
     private ReservationRepository reservationRepository;
-
     @Autowired
     private VehicleRepository vehicleRepository;
-
     @Autowired
     private EmployeeRepository employeeRepository;
 
     private Vehicle vehicle = new Vehicle();
-
     private Employee employee = new Employee();
-
     private Reservation reservation = new Reservation();
-
-
 
     @Before
     public void setUp() throws Exception {
@@ -63,13 +55,6 @@ public class ReservationServiceTest {
         reservation.setVehicle(vehicle);
         reservation.setDateFrom(LocalDate.now().minusDays(4));
         reservation.setDateTo(LocalDate.now().plusDays(5));
-
-        List<Reservation> reservations = new ArrayList<>();
-        reservations.add(reservation);
-
-        employee.setReservations(reservations);
-        vehicle.setReservations(reservations);
-
 
         reservationRepository.save(reservation);
         employeeRepository.save(employee);
